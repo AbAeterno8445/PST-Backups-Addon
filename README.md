@@ -2,6 +2,12 @@
 
 This little DLL addon allows the Passive Skill Trees mod to periodically create backups of your mod's savefiles to try and protect against data loss/corruption. Bear in mind that this only deals with mod data, the game's savefiles are unaffected by this or the mod itself.
 
+## **Installation**
+
+Requires REPENTOGON to be installed.
+
+Grab the latest release and drop the .dll file in your Isaac installation directory.
+
 ## **How it works**
 
 Whenever you start a run, a backup will be created in the same directory as the mod's save data (Isaac installation dir -> data/passive skill trees/), named after the savefile # such as "save3_backup1.dat", "save1_backup3.dat", etc.
