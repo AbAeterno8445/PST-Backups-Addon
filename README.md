@@ -11,3 +11,5 @@ If the mod detects data loss and backups are present, a prompt will appear when 
 By default up to 3 backup files per savefile are created, and then it cycles through the backups again, replacing the first, then the second, etc.
 
 You can increase the max amount of backups per savefile by going to the "PST_config.lua" file in the mod's directory, and changing the "maxBackups" option.
+
+Bear in mind that backups don't save mid-run tree snapshot changes, meaning that loading a backup then continuing a run will likely make you lose temporary effects and buffs granted by the tree gained throughout that run.
