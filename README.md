@@ -6,7 +6,7 @@ This little DLL addon allows the Passive Skill Trees mod to periodically create 
 
 Requires REPENTOGON to be installed.
 
-Grab the latest release and drop the .dll file in your Isaac installation directory.
+Grab the [latest release](https://github.com/AbAeterno8445/PST-Backups-Addon/releases) and drop the .dll file in your Isaac installation directory.
 
 ## **How it works**
 
