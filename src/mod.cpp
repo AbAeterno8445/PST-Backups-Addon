@@ -10,11 +10,12 @@
 std::string baseDir = "data/passive skill trees/";
 int backupCycle = 1;
 
-// PST_BackupSave(int targetFileNum, int maxBackups)
+// PST_BackupSave(int targetFileNum, int maxBackups, int playerLevel)
 // Save a backup for the given savefile, up to maxBackups, after which it will start cycling & replacing between the first and last backups
 LUA_FUNCTION(Lua_PST_Backup_Save) {
 	int targetFileNum = luaL_checkinteger(L, 1);
 	int maxBackups = luaL_checkinteger(L, 2);
+	int playerLevel = luaL_checkinteger(L, 3);
 	if (maxBackups <= 0) maxBackups = 3;
 
 	std::string savefilePath = baseDir + "save" + std::to_string(targetFileNum) + ".dat";
@@ -42,6 +43,8 @@ LUA_FUNCTION(Lua_PST_Backup_Save) {
 		std::ofstream dst(tmpBackupPath, std::ios::binary);
 
 		dst << src.rdbuf();
+		dst << '\n';
+		dst << playerLevel;
 		return 1;
 	}
 
@@ -68,15 +71,21 @@ LUA_FUNCTION(Lua_PST_Backup_Fetch) {
 
 	std::string backupPath = baseDir + "save" + std::to_string(targetFileNum) + "_backup" + std::to_string(targetBackupNum) + ".dat";
 
+	lua_newtable(L);
 	// Check that backup exists
 	struct stat tmpBuffer;
 	if (stat(backupPath.c_str(), &tmpBuffer) == 0) {
 		std::ifstream backupFile(backupPath);
-		std::ostringstream tmpStr;
-		tmpStr << backupFile.rdbuf();
-		
-		std::string backupContent = tmpStr.str();
+		std::string backupContent;
+		std::getline(backupFile, backupContent);
+
+		std::string backupLevel;
+		std::getline(backupFile, backupLevel);
+
 		lua_pushstring(L, backupContent.c_str());
+		lua_rawseti(L, -2, 1);
+		lua_pushstring(L, backupLevel.c_str());
+		lua_rawseti(L, -2, 2);
 		return 1;
 	}
 
@@ -94,10 +103,12 @@ LUA_FUNCTION(Lua_PST_Backup_Replace) {
 
 	struct stat tmpBuffer;
 	if (stat(backupPath.c_str(), &tmpBuffer) == 0) {
-		std::ifstream src(backupPath, std::ios::binary);
-		std::ofstream dst(savePath, std::ios::binary);
+		std::ifstream src(backupPath);
+		std::ofstream dst(savePath, std::ios::trunc);
 
-		dst << src.rdbuf();
+		std::string tmpLine;
+		std::getline(src, tmpLine);
+		dst << tmpLine;
 		return 1;
 	}
 
