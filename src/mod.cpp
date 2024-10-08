@@ -56,7 +56,8 @@ LUA_FUNCTION(Lua_PST_Backup_Exists) {
 	
 	std::string backupPath = baseDir + "save" + std::to_string(targetFileNum) + "_backup" + std::to_string(targetBackupNum) + ".dat";
 	struct stat tmpBuffer;
-	return stat(backupPath.c_str(), &tmpBuffer) == 0;
+	lua_pushboolean(L, stat(backupPath.c_str(), &tmpBuffer) == 0);
+	return 1;
 }
 
 // PST_BackupFetch(int targetFileNum, int targetBackupNum)
