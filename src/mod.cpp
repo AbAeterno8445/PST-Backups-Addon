@@ -7,7 +7,7 @@
 #include "IsaacRepentance.h"
 #include "HookSystem.h"
 
-std::string baseDir = "data/passive skill trees/";
+std::string baseDir = "../data/passive skill trees/";
 int backupCycle = 1;
 
 // PST_BackupSave(int targetFileNum, int maxBackups, int playerLevel)
@@ -132,4 +132,9 @@ HOOK_METHOD(LuaEngine, RegisterClasses, () -> void) {
 
 	lua_pushcfunction(L, Lua_PST_Backup_Replace);
 	lua_setglobal(L, "PST_BackupReplace");
+}
+
+MOD_EXPORT int ModInit()
+{
+	return 0;
 }
